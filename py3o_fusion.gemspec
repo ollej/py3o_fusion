@@ -2,8 +2,8 @@ $:.push File.expand_path("../lib", __FILE__)
 
 Gem::Specification.new do |s|
   s.name        = 'py3o_fusion'
-  s.version     = '1.0.0'
-  s.date        = '2019-03-08'
+  s.version     = '1.1.0'
+  s.date        = '2019-03-11'
   s.summary     = 'Generate PDF from ODF via Py3o.Fusion'
   s.authors     = ['Olle Wreede']
   s.email       = 'olle@wreede.se'

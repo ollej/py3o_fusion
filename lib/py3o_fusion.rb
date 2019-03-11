@@ -1,10 +1,13 @@
 require 'httparty'
 
 class Py3oFusion
-  def initialize(endpoint)
+  class Error < StandardError; end
+
+  def initialize(endpoint, logger: nil)
     @endpoint = endpoint
     @payload = {}
     @image_mapping = {}
+    @logger = logger
   end
 
   def template(template)
@@ -28,7 +31,8 @@ class Py3oFusion
     if response.code == 200
       store path, response.body
     else
-      raise StandardError.new "Error generating PDF"
+      error = JSON.parse(response.body)
+      raise Error.new "Error generating PDF: #{error['reasons']}"
     end
   end
 
@@ -42,7 +46,7 @@ class Py3oFusion
   end
 
   def post
-    HTTParty.post @endpoint, body: payload
+    HTTParty.post @endpoint, body: payload, logger: @logger
   end
 
   def store(path, content)
