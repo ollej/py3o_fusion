@@ -3,11 +3,11 @@ require 'httparty'
 class Py3oFusion
   class Error < StandardError; end
 
-  def initialize(endpoint, logger: nil)
+  def initialize(endpoint, options = {})
     @endpoint = endpoint
     @payload = {}
     @image_mapping = {}
-    @logger = logger
+    @options = options
   end
 
   def template(template)
@@ -46,10 +46,10 @@ class Py3oFusion
   end
 
   def post
-    HTTParty.post @endpoint, body: payload, logger: @logger
+    HTTParty.post @endpoint, @options.merge(body: payload)
   end
 
   def store(path, content)
-    File.open(path, 'w') { |file| file.write(content) }
+    File.open(path, 'wb') { |file| file.write(content) }
   end
 end

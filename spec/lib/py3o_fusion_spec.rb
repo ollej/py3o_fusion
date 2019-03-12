@@ -56,18 +56,21 @@ RSpec.describe Py3oFusion do
     end
   end
 
-  context 'with logger' do
+  context 'with options' do
     subject {
-      described_class.new('http://localhost:8765/form', logger: logger)
+      described_class.new('http://localhost:8765/form', logger: logger, timeout: 120)
         .template(template)
         .data(data)
         .static_image("test_image", image)
     }
     let(:logger) { double('Logger').as_null_object }
 
-    it 'sends logger object to HTTParty post' do
+    it 'merges options object to HTTParty post' do
       expect(HTTParty).to receive(:post) do |endpoint, options|
-        expect(options).to include(logger: logger)
+        expect(options).to include(
+          logger: logger,
+          timeout: 120
+        )
       end
       subject.send(:post)
     end
